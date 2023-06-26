@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <!-- <p>블로그 글 작성 화면</p>
+    <form action="{% url 'blog:write' %}" method="post">
+        {% csrf_token %}
+        {{ form.title.label_tag }}
+        <input type="text" name="{{ form.title.name }}" class="btn btn-outline-success">
+        <br>
+        {{ form.content.label_tag }}
+        <textarea type="text" name="{{ form.content.name }}"></textarea>
+        <br>
+        <input type="submit" value="수정 완료">
+    </form> -->
+
+    <p>블로그 글 작성 화면</p>
+    <form action="{% url 'blog:write' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-outline-success">
+    </form>
+{% endblock %}
