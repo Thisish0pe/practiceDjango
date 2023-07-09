@@ -2,7 +2,87 @@
 
 {% block content %}
 <h2>제목 : {{ post.title }}</h2>
+<!-- 다른 template 넘어가는 것 a -->
+<a href="{% url 'blog:edit' pk=post.pk %}" class="btn btn-outline-success">수정</a>
+<!-- 다른 template으로 넘어가지 않는 것 form -->
+<form action="{% url 'blog:delete' pk=post.pk %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="삭제" class="btn btn-outline-success">
+</form>
 <p>내용 : {{ post.content }}</p>
 <p>작성자 : {{ post.writer }}</p>
 <p>작성일 : {{ post.created_at }}</p>
+<p>수정일 : {{ post.updated_at }}</p>
+
+<!-- Comment -->
+<!-- 댓글 작성 -->
+<h3>댓글</h3>
+<form action="{% url 'blog:cm-write' pk=post.pk %}" method="post">
+    {% csrf_token %}
+    {% if comment_form.errors %}
+        {% with form=comment_form %}
+            {% include 'blog/form_error.html' %}
+        {% endwith %}
+    {% else %}
+        {{ comment_form.content }}
+    {% endif %}
+    <input type="submit" value="댓글 작성">
+</form>
+<!-- 댓글 목록 -->
+{% if comments %}
+    <ul>
+        {% for comment in comments %}
+            <li>
+                {{ comment.content }} / {{ comment.created_at }}
+                <!-- 댓글 수정 버튼 -->
+                <form action="{% url 'blog:cm-edit' pk=comment.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="수정" class="btn">
+                </form>
+                <!-- 댓글 삭제 버튼 -->
+                <form action="{% url 'blog:cm-delete' pk=comment.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="x" class="btn">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>댓글이 없습니다.</p>
+{% endif %}
+
+<!-- Hashtag -->
+<!-- 태그작성 -->
+<h3>해시태그</h3>
+<form action="{% url 'blog:tag-write' pk=post.pk %}" method="post">
+    {% csrf_token %}
+    {% if hashtag_form.errors %}
+        {% with form=hashtag_form %}
+            {% include 'blog/form_error.html' %}
+        {% endwith %}
+    {% else %}
+        {{ hashtag_form.name }}
+    {% endif %}
+    <input type="submit" value="태그 작성">
+</form>
+<!-- 태그목록 -->
+{% if hashtags %}
+    <ul>
+        {% for hashtag in hashtags %}
+            <li>
+                {{ hashtag.name }}
+                <!-- 태그 삭제버튼 -->
+                <form action="{% url 'blog:tag-delete' pk=hashtag.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="x" class="btn">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>해시태그가 없습니다.</p>
+{% endif %}
+
+<!-- 글 목록으로 돌아가기 버튼 -->
+<a href="{% url 'blog:list' %}" class="btn btn-outline-success">글 목록</a>
 {% endblock %}
