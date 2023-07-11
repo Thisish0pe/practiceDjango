@@ -131,11 +131,6 @@ class CommentWrite(View):
             "hashtag_form": form
         }
         return render(request, 'blog/post_detail.html', context)
-    
-
-class CommentEdit(View):
-    def post(self, request, pk): # pk=comment_id
-        pass
 
 
 class CommentDelete(View):
@@ -153,7 +148,7 @@ class CommentDelete(View):
 ### Hashtag
 class HashTagWrite(View):
     def post(self, request, pk): # post_id
-        form = HashTagForm(request.Post)
+        form = HashTagForm(request.POST)
         try:
             post = Post.objects.get(pk=pk)
         except ObjectDoesNotExist as e:

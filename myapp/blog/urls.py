@@ -16,8 +16,6 @@ urlpatterns = [
     path("detail/<int:pk>/delete/", views.Delete.as_view(), name='delete'),
     # 코멘트 작성
     path("detail/<int:pk>/comment/write/", views.CommentWrite.as_view(), name='cm-write'),
-    # 코멘트 수정
-    path("detail/<int:pk>/comment/edit/", views.CommentEdit.as_view(), name='cm-edit'),
     # 코멘트 삭제
     path("detail/<int:pk>/comment/delete/", views.CommentDelete.as_view(), name='cm-delete'),
     # 해쉬태그 작성
