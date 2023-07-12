@@ -34,5 +34,17 @@ class UserManager(BaseUserManager):
     
 
 class User(AbstractUser):
-    pass
+    username = None # 본 프로젝트에서는 username대신 email을 사용하기 때문에 오류 방지차원에서 username = None 사용
+    email = models.EmailField(unique=True, max_length=225)
+    name = models.CharField(max_length=50, null=True, blank=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    last_login = models.DateTimeField(null=True, blank=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = []
     
+    objects = UserManager() #User 모델에서 UserManager 클래스 사용
