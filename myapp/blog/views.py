@@ -5,7 +5,7 @@ from .models import Post, Comment, HashTag
 from .forms import PostForm, CommentForm, HashTagForm
 
 ### Post
-class List(View):
+class Index(View):
     def get(self, request):
         post_objs = Post.objects.all()
         context = {
