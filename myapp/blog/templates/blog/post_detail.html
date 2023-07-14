@@ -2,13 +2,16 @@
 
 {% block content %}
 <h2>제목 : {{ post.title }}</h2>
-<!-- 다른 template 넘어가는 것 a -->
-<a href="{% url 'blog:edit' pk=post.pk %}" class="btn btn-outline-success">수정</a>
-<!-- 다른 template으로 넘어가지 않는 것 form -->
-<form action="{% url 'blog:delete' pk=post.pk %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="삭제" class="btn btn-outline-success">
-</form>
+{% if post_writer == request.user %}
+    <!-- 다른 template 넘어가는 것 a -->
+    <a href="{% url 'blog:edit' pk=post.pk %}" class="btn btn-outline-success">수정</a>
+    <!-- 다른 template으로 넘어가지 않는 것 form -->
+    <form action="{% url 'blog:delete' pk=post.pk %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="삭제" class="btn btn-outline-success">
+    </form>
+{% endif %}
+
 <p>내용 : {{ post.content }}</p>
 <p>작성자 : {{ post.writer }}</p>
 <p>작성일 : {{ post.created_at }}</p>
@@ -34,11 +37,13 @@
         {% for comment in comments %}
             <li>
                 {{ comment.content }} / {{ comment.created_at }}
-                <!-- 댓글 삭제 버튼 -->
-                <form action="{% url 'blog:cm-delete' pk=comment.pk %}" method="post">
-                    {% csrf_token %}
-                    <input type="submit" value="x" class="btn">
-                </form>
+                {% if comment.writer == request.user %}
+                    <!-- 댓글 삭제 버튼 -->
+                    <form action="{% url 'blog:cm-delete' pk=comment.pk %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="x" class="btn">
+                    </form>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
@@ -66,11 +71,13 @@
         {% for hashtag in hashtags %}
             <li>
                 {{ hashtag.name }}
-                <!-- 태그 삭제버튼 -->
-                <form action="{% url 'blog:tag-delete' pk=hashtag.pk %}" method="post">
-                    {% csrf_token %}
-                    <input type="submit" value="x" class="btn">
-                </form>
+                {% if hashtag_writer == request.user %}
+                    <!-- 태그 삭제버튼 -->
+                    <form action="{% url 'blog:tag-delete' pk=hashtag.pk %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="x" class="btn">
+                    </form>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
