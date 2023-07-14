@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 #Login URL
-# LOGIN_URL = '/user/login'
+LOGIN_URL = '/user/login'
 
 
 # Quick-start development settings - unsuitable for production
@@ -63,7 +63,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"], #myapp/templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

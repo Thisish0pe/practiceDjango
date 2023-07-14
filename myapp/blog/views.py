@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from .models import Post, Comment, HashTag
 from .forms import PostForm, CommentForm, HashTagForm
@@ -34,7 +35,7 @@ class DetailView(View):
         return render(request, 'blog/post_detail.html', context)
 
 
-class Write(View):
+class Write(LoginRequiredMixin, View):
     def get(self, request):
         form = PostForm()
         context = {
@@ -46,10 +47,15 @@ class Write(View):
     def post(self, request):
         form = PostForm(request.POST)
         if form.is_valid():
-            title = form.cleaned_data ['title']
-            content = form.cleaned_data['content']
-            post = Post.objects.create (title=title, content=content)
+            post = form.save(commit=False)
+            post.writer = request.user
+            post.save()
             return redirect('blog:list')
+        
+        context = {
+            "form": form
+        }
+        return render(request, 'blog/post_form.html', context)
 
 
 class Update(View):

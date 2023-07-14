@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
         now = timezone.localtime()
         # email address를 표준으로 자동 교정해주는 django 기능
         email = self.normalize_email(email)
-        user = self.modal(
+        user = self.model(
             email=email,
             is_staff=is_staff,
             # 이 계정이 활성인가.
